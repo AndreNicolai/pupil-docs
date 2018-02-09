@@ -11,7 +11,7 @@ page_weight = 1.3
 
 This Unity 3D plugin is intended to be used with the Pupil Capture/Service applications, the related eye tracking hardware and Virtual/Augmented Reality headsets (Head Mounted Displays). You can get the latest versions here 
 
-https://github.com/pupil-labs/pupil/releases/latest 
+- [Pupil GitHub Repo](https://github.com/pupil-labs/pupil/releases/latest)
 
 The plugin is developed and tested with the latest versions of Unity 3D (2017 releases), publicly available at 
 
@@ -32,15 +32,11 @@ This document will describe the use of the latter two in more detail. Both share
 To open either project, start Unity and select `unity_pupil_plugin_hololens` or `unity_pupil_plugin_vr` as source folder. 
 
 **The VR Build and Player Settings should look like this**
-
- 
-
+![VR Build And Player Settings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/VRBuildAndPlayerSettings.png)
 The software has been tested for both Oculus and OpenVR SDKs. Please make sure to select the correct one for your type of headset. 
 
 **As for HoloLens**
-
- 
-
+![HoloLens Build And Player Settings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HoloLensBuildAndPlayerSettings.png)
 The `Build Settings` debugging option `Unity C# Projects` will allow you to debug the code at runtime while deploying to HoloLens from Visual Studio. As an alternative debugging option, Unity`s `Holographic Emulation` is also supported. 
 
 As for the Player Settings, make sure the following `Capabilities` are enabled under `Publishing Settings` 
@@ -53,39 +49,35 @@ The Unity scene `pupil_plugin/Calibration.unity`, which is included in both proj
 
 **In case of VR, two things are important for the initial steps**
 
-- The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC. On local PCs, you have the option to let Unity start Pupil Capture/Service by setting the `Path` to the executable (click the `Browse` button).   
+- The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC. On local PCs, you have the option to let Unity start Pupil Capture/Service by setting the `Path` to the executable (click the `Browse` button). ![Pupil Gaze Tracker](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker.png)
 
-- `PupilSettings` is located in `pupil_plugin/Resources` and is used to save global settings that are not specific to a scene. Important for the initial steps is the `Connection`, which lets you set both the IP (in case of Pupil running remotely) as well as the port over which to communicate. If the standard port of 50020 does not work for you, please set an alternative here and also make sure that the same port is set in Pupil Capture (more on that, later). 
+- `PupilSettings` is located in `pupil_plugin/Resources` and is used to save global settings that are not specific to a scene. Important for the initial steps is the `Connection`, which lets you set both the IP (in case of Pupil running remotely) as well as the port over which to communicate. If the standard port of 50020 does not work for you, please set an alternative here and also make sure that the same port is set in Pupil Capture (more on that, later). ![PupilSettings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings.png)
 
 **Differences for HoloLens**
 
-- As Pupil Capture/Service does not support native execution on HoloLens/UWP but has to run on a remote PC, `PupilGazeTracker` does not need to offer any options to change this. In contrast to its VR pendant, the gameobject includes an additional component called `UDP Communication`. Here, an additional port (named `Editor Mode UDP Port`) can be set. It is needed, if you use `Holographic Emulation` and (at least on Windows machines) needs to be different from the main port, discussed next.  
+- As Pupil Capture/Service does not support native execution on HoloLens/UWP but has to run on a remote PC, `PupilGazeTracker` does not need to offer any options to change this. In contrast to its VR pendant, the gameobject includes an additional component called `UDP Communication`. Here, an additional port (named `Editor Mode UDP Port`) can be set. It is needed, if you use `Holographic Emulation` and (at least on Windows machines) needs to be different from the main port, discussed next. ![Pupil Gaze Tracker For HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker_HoloLens.png)
 
-- As mentioned before, the HoloLens implementation needed to be customized to be able to run it in the UWP environment. Our solution relies on UDP to communicate data between the Unity plugin and Pupil. Select `PupilSettings` in the `Project` tab and set the IP of the PC Pupil is running on under `Connection`. Please also make sure the port set here corresponds with the one you set in the `HoloLens Relay` plugin in Pupil Capture. 
+- As mentioned before, the HoloLens implementation needed to be customized to be able to run it in the UWP environment. Our solution relies on UDP to communicate data between the Unity plugin and Pupil. Select `PupilSettings` in the `Project` tab and set the IP of the PC Pupil is running on under `Connection`. Please also make sure the port set here corresponds with the one you set in the `HoloLens Relay` plugin in Pupil Capture. ![PupilSettings for HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings_HoloLens.png)
 
 ### Pupil Capture/Service setup 
 
 My personal recommendation is to start development with Pupil Capture, as it gives the most options for feedback if things are not set correctly or if something goes wrong. Once everything is working as intended, Pupil Service is a good solution to minimize the windows on screen. In our case, one or two eye windows, depending on your setup 
-
- 
-
+![Eye Window](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/EyeWindow.png)
 During the tracking process, one instance of these windows should always be open per eye camera. 
 
 In its main GUI, Pupil Capture gives real time feedback on how the confidence level is doing 
-
- 
-
+![Pupil Capture Main GUI](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilCaptureMainGUI.png)
 One of the most common problems is the standard communication port `50020` being blocked. In that case, Pupil Capture will chose an alternate one. To be able to check this, activate `Pupil Remote` in Plugin Manager 
-
- 
-
+![Pupil Capture Plugins](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilCapturePlugins.png)
 Also included in the image above are screenshots of the `HoloLens Relay` and the `Blink Detector` plugin. The former allowing you to adapt the port for HoloLens communication, the latter to change blink detection variables. 
 
 ### Running a Calibration 
 
-Once a connection has been established, you are presented with an option to start the calibration. The process shows a marker in varying positions for the user to follow. The standard pattern is a circle on which the marker is placed (2D case displayed on the left). Based on the headset you are using (our setup is optimized for HTC Vive), this pattern might need to be adapted. To do so, go to `pupil_plugin/PupilSettings` and select `Calibration` 
-
+Once a connection has been established, you are presented with an option to start the calibration. The process shows a marker in varying positions for the user to follow. The standard pattern is a circle on which the marker is placed.
+![Calirbation - Standard 2D Marker Positions](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/Calirbation-Standard2DMarkerPositions.png)
+Based on the headset you are using (our setup is optimized for HTC Vive), this pattern might need to be adapted. To do so, go to `pupil_plugin/PupilSettings` and select `Calibration` 
  
+![PupilSettings for Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettingsCalibration.png)
 
 - `Points` defines the number of points per circle, the first being in the center of it. 
 
@@ -113,23 +105,23 @@ Excluding the Blink Unity scene, every other demo contains the PupilDemoManager 
 
 ### Accessing Data 
 
-After a successful calibration, you need to call PupilTools.Subscribe(string topic) to receive messages for the `topic` you specify. Most of the demos included in this project are based on subscribing to `gaze` and its implementation shall serve as an example on how to do it for other topics. Message interpretation is handled inside the code block starting in line 127 of Connection.cs. Pupil messages for the `gaze` topic contain dictionaries, which are deserialized using the MessagePackSerializer classes (line 167) and stored to PupilTools.gazeDictionary. PupilTools.UpdateGaze() goes through the data, storing relevant information (e.g. the gaze positions) through PupilData.AddGazeToEyeData(string key, float[] position). Based on the chosen calibration type, this can either be 2D or 3D. To access the data, use 
+After a successful calibration, you need to call `PupilTools.Subscribe(string topic)` to receive messages for the `topic` you specify. Most of the demos included in this project are based on subscribing to `gaze` and its implementation shall serve as an example on how to do it for other topics. Message interpretation is handled inside the code block starting in line 127 of `Connection.cs`. Pupil messages for the `gaze` topic contain dictionaries, which are deserialized using the `MessagePackSerializer` classes (line 167) and stored to `PupilTools.gazeDictionary`. `PupilTools.UpdateGaze()` goes through the data, storing relevant information (e.g. the gaze positions) through `PupilData.AddGazeToEyeData(string key, float[] position)`. Based on the chosen calibration type, this can either be 2D or 3D. To access the data, use 
 
-- PupilData._2D.GetEyeGaze (PupilData.GazeSource s), which will provide the current viewport coordinates in camera space (used e.g. for the three colored markers) 
+- `PupilData._2D.GetEyeGaze (PupilData.GazeSource s)`, which will provide the current viewport coordinates in camera space (used e.g. for the three colored markers) 
 
-- PupilData._2D.GetEyePosition (Camera sceneCamera, GazeSource gazeSource), which will apply an additional frustum center offset for each eye (used e.g. for the shader implementations) 
+- `PupilData._2D.GetEyePosition (Camera sceneCamera, GazeSource gazeSource)`, which will apply an additional frustum center offset for each eye (used e.g. for the shader implementations) 
 
-- PupilData._3D.GazePosition, which contains the camera relative gaze position 
+- `PupilData._3D.GazePosition`, which contains the camera relative gaze position 
 
 As the 3D calibration is currently still under active development, it is recommended to rely on 2D calibration, for now. Unity provides methods to convert 2D viewport coordinates to 3D, which is e.g. used for marker positioning 
 
-- PupilMarker.UpdatePosition(Vector2 newPosition), line 56 
+- `PupilMarker.UpdatePosition(Vector2 newPosition)`, line 56 
 
 	gameObject.transform.position = camera.ViewportToWorldPoint(position); 
 
 An alternative is used by the laster pointer implementation in the `2D Calibration Demo` scene  
 
-- MarketWith2DCalibration.Update(), line 63 
+- `MarketWith2DCalibration.Update()`, line 63 
 
 	Ray ray = sceneCamera.ViewportPointToRay(viewportPoint); 
 
@@ -142,6 +134,7 @@ Here a short description of the included examples and what should be visible on 
 **Calibration** 
 
 This scene will display three colored markers representing the left (green) and right (blue) eye plus the center point (red). If everything calibrated as intended, these markers should be very close to each other. 
+![Calibration Scene Three Colored Markers](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/CalibrationSceneThreeColoredMarkers.png)
 
 **Blink** 
 
@@ -155,7 +148,7 @@ These scenes will display a 3D market scene, based on Unity assets available for
 
 - A shader-based implementation that grays out the area around each of the eyes position (right) 
 
- 
+![2D Demo Visualization](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/2DDemoVisualizations.png) 
 
 **2D/3D Calibration Demo (HoloLens)**
 
@@ -167,14 +160,12 @@ As many users asked for this feature, we now include a demo that can load and di
 
 - Using Unity`s internal player, for which the video has to be part of the project files. The included example is based on the market demo scene 
 
-- Using ffmpeg to load external videos and access videoframes at runtime. Depending on the machine it is running on and if it is running in Unity Editor or standalone, this can be slow 
+- Using `ffmpeg` to load external videos and access videoframes at runtime. Depending on the machine it is running on and if it is running in Unity Editor or standalone, this can be slow 
 
 **Heatmap demo**
 
 The heatmap demo allows to export gaze visualization to a spherical video or image. Eye tracking positions are translated to particles on a spherical texture, which is overlayed on the 3d scene. The heatmap is available as Prefab, as well, and can be added to existing scenes by dragging it onto the main camera of that scene. After calibration, press `h` to start recording the output video or to capture the current view to an image. The output path is the same as the one defined by the settings for PupilGazeTracker recordings. A few variables can change how the heatmap behaves 
-
- 
-
+![Heatmap Component](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HeatmapComponent.png)
 - Mode 
 
 	-`Particle` will color the area the user is looking at 
@@ -182,12 +173,10 @@ The heatmap demo allows to export gaze visualization to a spherical video or ima
 	- `ParticleDebug` will show it for the user, as well 
 
 	- `Highlight` will only fill-in the area looked at 
-
- 
+	![Highlight Mode Heatmap](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HighlightModeHeatmap.jpg)
 
 	- `Image` will keep all particles and color code them based on the time of creation 
-
- 
+	![Image Mode Heatmap](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/ImageModeHeatmap.jpg)
 
 	- `Particle Size` - The size of a single gaze visualizing particle 
 
