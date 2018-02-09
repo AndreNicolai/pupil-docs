@@ -53,18 +53,26 @@ The Unity scene `pupil_plugin/Calibration.unity`, which is included in both proj
 
 **In case of VR, two things are important for the initial steps**
 
-- The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC. On local PCs, you have the option to let Unity start Pupil Capture/Service by setting the `Path` to the executable (click the `Browse` button). ![Pupil Gaze Tracker](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker.png)
+- The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC. On local PCs, you have the option to let Unity start Pupil Capture/Service by setting the `Path` to the executable (click the `Browse` button). 
+
+![Pupil Gaze Tracker](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker.png)
 
 
-- `PupilSettings` is located in `pupil_plugin/Resources` and is used to save global settings that are not specific to a scene. Important for the initial steps is the `Connection`, which lets you set both the IP (in case of Pupil running remotely) as well as the port over which to communicate. If the standard port of 50020 does not work for you, please set an alternative here and also make sure that the same port is set in Pupil Capture (more on that, later). ![PupilSettings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings.png)
+- `PupilSettings` is located in `pupil_plugin/Resources` and is used to save global settings that are not specific to a scene. Important for the initial steps is the `Connection`, which lets you set both the IP (in case of Pupil running remotely) as well as the port over which to communicate. If the standard port of 50020 does not work for you, please set an alternative here and also make sure that the same port is set in Pupil Capture (more on that, later). 
+
+![PupilSettings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings.png)
 
 
 **Differences for HoloLens**
 
-- As Pupil Capture/Service does not support native execution on HoloLens/UWP but has to run on a remote PC, `PupilGazeTracker` does not need to offer any options to change this. In contrast to its VR pendant, the gameobject includes an additional component called `UDP Communication`. Here, an additional port (named `Editor Mode UDP Port`) can be set. It is needed, if you use `Holographic Emulation` and (at least on Windows machines) needs to be different from the main port, discussed next. ![Pupil Gaze Tracker For HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker_HoloLens.png)
+- As Pupil Capture/Service does not support native execution on HoloLens/UWP but has to run on a remote PC, `PupilGazeTracker` does not need to offer any options to change this. In contrast to its VR pendant, the gameobject includes an additional component called `UDP Communication`. Here, an additional port (named `Editor Mode UDP Port`) can be set. It is needed, if you use `Holographic Emulation` and (at least on Windows machines) needs to be different from the main port, discussed next. 
+
+![Pupil Gaze Tracker For HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker_HoloLens.png)
 
 
-- As mentioned before, the HoloLens implementation needed to be customized to be able to run it in the UWP environment. Our solution relies on UDP to communicate data between the Unity plugin and Pupil. Select `PupilSettings` in the `Project` tab and set the IP of the PC Pupil is running on under `Connection`. Please also make sure the port set here corresponds with the one you set in the `HoloLens Relay` plugin in Pupil Capture. ![PupilSettings for HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings_HoloLens.png)
+- As mentioned before, the HoloLens implementation needed to be customized to be able to run it in the UWP environment. Our solution relies on UDP to communicate data between the Unity plugin and Pupil. Select `PupilSettings` in the `Project` tab and set the IP of the PC Pupil is running on under `Connection`. Please also make sure the port set here corresponds with the one you set in the `HoloLens Relay` plugin in Pupil Capture. 
+
+![PupilSettings for HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings_HoloLens.png)
 
 
 ### Pupil Capture/Service setup 
@@ -73,6 +81,7 @@ My personal recommendation is to start development with Pupil Capture, as it giv
 
 
 ![Eye Window](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/EyeWindow.png)
+
 During the tracking process, one instance of these windows should always be open per eye camera. 
 
 In its main GUI, Pupil Capture gives real time feedback on how the confidence level is doing 
