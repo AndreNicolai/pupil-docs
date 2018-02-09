@@ -32,10 +32,14 @@ This document will describe the use of the latter two in more detail. Both share
 To open either project, start Unity and select `unity_pupil_plugin_hololens` or `unity_pupil_plugin_vr` as source folder. 
 
 **The VR Build and Player Settings should look like this**
+
+
 ![VR Build And Player Settings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/VRBuildAndPlayerSettings.png)
 The software has been tested for both Oculus and OpenVR SDKs. Please make sure to select the correct one for your type of headset. 
 
 **As for HoloLens**
+
+
 ![HoloLens Build And Player Settings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HoloLensBuildAndPlayerSettings.png)
 The `Build Settings` debugging option `Unity C# Projects` will allow you to debug the code at runtime while deploying to HoloLens from Visual Studio. As an alternative debugging option, Unity`s `Holographic Emulation` is also supported. 
 
@@ -51,30 +55,43 @@ The Unity scene `pupil_plugin/Calibration.unity`, which is included in both proj
 
 - The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC. On local PCs, you have the option to let Unity start Pupil Capture/Service by setting the `Path` to the executable (click the `Browse` button). ![Pupil Gaze Tracker](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker.png)
 
+
 - `PupilSettings` is located in `pupil_plugin/Resources` and is used to save global settings that are not specific to a scene. Important for the initial steps is the `Connection`, which lets you set both the IP (in case of Pupil running remotely) as well as the port over which to communicate. If the standard port of 50020 does not work for you, please set an alternative here and also make sure that the same port is set in Pupil Capture (more on that, later). ![PupilSettings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings.png)
+
 
 **Differences for HoloLens**
 
 - As Pupil Capture/Service does not support native execution on HoloLens/UWP but has to run on a remote PC, `PupilGazeTracker` does not need to offer any options to change this. In contrast to its VR pendant, the gameobject includes an additional component called `UDP Communication`. Here, an additional port (named `Editor Mode UDP Port`) can be set. It is needed, if you use `Holographic Emulation` and (at least on Windows machines) needs to be different from the main port, discussed next. ![Pupil Gaze Tracker For HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker_HoloLens.png)
 
+
 - As mentioned before, the HoloLens implementation needed to be customized to be able to run it in the UWP environment. Our solution relies on UDP to communicate data between the Unity plugin and Pupil. Select `PupilSettings` in the `Project` tab and set the IP of the PC Pupil is running on under `Connection`. Please also make sure the port set here corresponds with the one you set in the `HoloLens Relay` plugin in Pupil Capture. ![PupilSettings for HoloLens](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettings_HoloLens.png)
+
 
 ### Pupil Capture/Service setup 
 
 My personal recommendation is to start development with Pupil Capture, as it gives the most options for feedback if things are not set correctly or if something goes wrong. Once everything is working as intended, Pupil Service is a good solution to minimize the windows on screen. In our case, one or two eye windows, depending on your setup 
+
+
 ![Eye Window](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/EyeWindow.png)
 During the tracking process, one instance of these windows should always be open per eye camera. 
 
 In its main GUI, Pupil Capture gives real time feedback on how the confidence level is doing 
+
+
 ![Pupil Capture Main GUI](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilCaptureMainGUI.png)
 One of the most common problems is the standard communication port `50020` being blocked. In that case, Pupil Capture will chose an alternate one. To be able to check this, activate `Pupil Remote` in Plugin Manager 
+
+
 ![Pupil Capture Plugins](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilCapturePlugins.png)
 Also included in the image above are screenshots of the `HoloLens Relay` and the `Blink Detector` plugin. The former allowing you to adapt the port for HoloLens communication, the latter to change blink detection variables. 
 
 ### Running a Calibration 
 
 Once a connection has been established, you are presented with an option to start the calibration. The process shows a marker in varying positions for the user to follow. The standard pattern is a circle on which the marker is placed.
+
+
 ![Calirbation - Standard 2D Marker Positions](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/Calirbation-Standard2DMarkerPositions.png)
+
 Based on the headset you are using (our setup is optimized for HTC Vive), this pattern might need to be adapted. To do so, go to `pupil_plugin/PupilSettings` and select `Calibration` 
  
 ![PupilSettings for Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettingsCalibration.png)
@@ -134,6 +151,8 @@ Here a short description of the included examples and what should be visible on 
 **Calibration** 
 
 This scene will display three colored markers representing the left (green) and right (blue) eye plus the center point (red). If everything calibrated as intended, these markers should be very close to each other. 
+
+
 ![Calibration Scene Three Colored Markers](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/CalibrationSceneThreeColoredMarkers.png)
 
 **Blink** 
@@ -148,7 +167,7 @@ These scenes will display a 3D market scene, based on Unity assets available for
 
 - A shader-based implementation that grays out the area around each of the eyes position (right) 
 
-![2D Demo Visualization](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/2DDemoVisualizations.png) 
+	![2D Demo Visualization](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/2DDemoVisualizations.png) 
 
 **2D/3D Calibration Demo (HoloLens)**
 
@@ -165,6 +184,8 @@ As many users asked for this feature, we now include a demo that can load and di
 **Heatmap demo**
 
 The heatmap demo allows to export gaze visualization to a spherical video or image. Eye tracking positions are translated to particles on a spherical texture, which is overlayed on the 3d scene. The heatmap is available as Prefab, as well, and can be added to existing scenes by dragging it onto the main camera of that scene. After calibration, press `h` to start recording the output video or to capture the current view to an image. The output path is the same as the one defined by the settings for PupilGazeTracker recordings. A few variables can change how the heatmap behaves 
+
+
 ![Heatmap Component](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HeatmapComponent.png)
 - Mode 
 
@@ -173,9 +194,11 @@ The heatmap demo allows to export gaze visualization to a spherical video or ima
 	- `ParticleDebug` will show it for the user, as well 
 
 	- `Highlight` will only fill-in the area looked at 
+	
 	![Highlight Mode Heatmap](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HighlightModeHeatmap.jpg)
 
 	- `Image` will keep all particles and color code them based on the time of creation 
+	
 	![Image Mode Heatmap](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/ImageModeHeatmap.jpg)
 
 	- `Particle Size` - The size of a single gaze visualizing particle 
