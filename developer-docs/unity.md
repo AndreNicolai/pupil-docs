@@ -168,6 +168,13 @@ This scene will display three colored markers representing the left (green) and 
 
 A barebones implementation for users who do not need gaze data or want a simple example on how to subscribe to a topic and read data from the socket. As suggested by its name, this demo utilizes the Blink_Detection Pupil plugin. It does not require to run through the calibration process. While dictionary setup is usually kept within PupilTools, BlinkDemoManager contains all blink-specific variants to give a better overview of what is involved. This includes starting/stopping the plugin, un-/subscribing to `blinks` and receiving the dictionary packages from Pupil. 
 
+**Frame Publishing**
+
+Another quick-to-read, all-in-one-script example, this time for accessing Pupil eye camera images through the Unity plugin. Have a look at `FramePublishingDemoManager.cs` - which replaced the old `Operator Monitor` implementation - for more details. Much like the Blink demo, this also does not require to go through the calibration process.
+
+
+![Frame Publishing Demo](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/FramePublishing.png)
+
 **2D/3D Calibration Demo (VR)**
 
 These scenes will display a 3D market scene, based on Unity assets available for free on the Asset Store. While the 3D calibration scene only includes a simple white marker visualization, the 2D calibration pendant includes the three colored variant used in the Calibration demo scene and two additional visualizations 
