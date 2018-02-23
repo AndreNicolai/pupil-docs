@@ -96,12 +96,17 @@ Also included in the image above are screenshots of the `HoloLens Relay` and the
 
 ### Running a Calibration 
 
-Once a connection has been established, you are presented with an option to start the calibration. The process shows a marker in varying positions for the user to follow. The standard pattern is a circle on which the marker is placed.
+Once a connection has been established, the next step usually is to start a calibration. As this is a critical point, we added two feedback features that should be considered before doing so
 
 
-![Calirbation - Standard 2D Marker Positions](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/Calirbation-Standard2DMarkerPositions.png)
+![Before Starting A Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/BeforeStartingCalibration.png)
 
-Based on the headset you are using (our setup is optimized for HTC Vive), this pattern might need to be adapted. To do so, go to `pupil_plugin/PupilSettings` and select `Calibration` 
+- A circle indicating the extend of where the calibration marker will be placed
+- An image for each eye camera to help you make sure the headset is set up correctly 
+
+The positioning of the calibration marker is very important, as it is used as reference for the Pupil eye tracking algorithms. If you are having trouble with the accuracy, try adapting the calibration settings:
+
+Go to `pupil_plugin/PupilSettings` and select `Calibration` 
  
 ![PupilSettings for Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilSettingsCalibration.png)
 
