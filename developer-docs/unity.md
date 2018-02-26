@@ -53,7 +53,7 @@ The Unity scene `pupil_plugin/Calibration.unity`, which is included in both proj
 
 **In case of VR, two things are important for the initial steps**
 
-- The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC. On local PCs, you have the option to let Unity start Pupil Capture/Service by setting the `Path` to the executable (click the `Browse` button). 
+- The `PupilGazeTracker` gameobject offers an Inspector GUI to set how to communicate with Pupil Capture/Service. Either can run on the same `Local` computer or on a `Remote` PC.
 
 ![Pupil Gaze Tracker](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilGazeTracker.png)
 
@@ -77,7 +77,7 @@ The Unity scene `pupil_plugin/Calibration.unity`, which is included in both proj
 
 ### Pupil Capture/Service setup 
 
-My personal recommendation is to start development with Pupil Capture, as it gives the most options for feedback if things are not set correctly or if something goes wrong. Once everything is working as intended, Pupil Service is a good solution to minimize the windows on screen. In our case, one or two eye windows, depending on your setup 
+As of late February 2018 and with release version 0.5, either Pupil Capture or Pupil Service needs to be started by the user. (Before, it was possible to let Unity do this automatically by setting the path to the corresponding executable.) My personal recommendation is to start development with Pupil Capture, as it gives the most options for feedback if things are not set correctly or if something goes wrong. Once everything is working as intended, Pupil Service is a good solution to minimize complexity on screen. In our case, one or two eye windows depending on your setup plus the new Service GUI
 
 
 ![Eye Window](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/EyeWindow.png)
@@ -112,11 +112,13 @@ Go to `pupil_plugin/PupilSettings` and select `Calibration`
 
 - `Points` defines the number of points per circle, the first being in the center of it. 
 
-- `Vector Depth Radius Scale` can be adapted to define the dimension of the circle 
+- `Marker Scale` determines the size of the calibration marker on screen 
 
-	- 2D calibration: We place the markers based on viewport coordinates, starting at the center position (0.5,0.5). Depth translates to the distance from the camera at which marker is placed. Radius defines the distance from the center point (in viewport space). Scale determines the size of the marker. 
+- `Vector Depth Radius` can be adapted to define the dimension of the circle 
 
-    - 3D calibration: We place the markers based on XYZ coordinates in local camera space. As we need to calibrate for depth, as well, we have multiple distances at which the circle pattern is applied. In the standard case at a distance of `1`, `5` and 10`. Radius defines the XY distance from the current center point (0,0,Depth). Scale determines the size of the marker at that depth. 
+	- 2D calibration: We place the markers based on viewport coordinates, starting at the center position (0.5,0.5). Depth translates to the distance from the camera at which marker is placed. Radius defines the distance from the center point (in viewport space).
+
+    - 3D calibration: We place the markers based on XYZ coordinates in local camera space. As we need to calibrate for depth, as well, we have multiple distances at which the circle pattern is applied. In the standard case at a distance of `0.6`, `1` and `2`. Radius defines the XY distance from the current center point (0,0,Depth).
 
 - `Samples Per Depth` defines the amount of calibration points recorder for each marker position. We reduced this number for 3D calibration to a third of the samples of 2D calibration so it takes the same duration of time. 
 
@@ -138,13 +140,13 @@ Excluding the Blink Unity scene, every other demo contains the PupilDemoManager 
 
 After a successful calibration, you need to call `PupilTools.Subscribe(string topic)` to receive messages for the `topic` you specify. Most of the demos included in this project are based on subscribing to `gaze` and its implementation shall serve as an example on how to do it for other topics. Message interpretation is handled inside the code block starting in line 127 of `Connection.cs`. Pupil messages for the `gaze` topic contain dictionaries, which are deserialized using the `MessagePackSerializer` classes (line 167) and stored to `PupilTools.gazeDictionary`. `PupilTools.UpdateGaze()` goes through the data, storing relevant information (e.g. the gaze positions) through `PupilData.AddGazeToEyeData(string key, float[] position)`. Based on the chosen calibration type, this can either be 2D or 3D. To access the data, use 
 
-- `PupilData._2D.GetEyeGaze (PupilData.GazeSource s)`, which will provide the current viewport coordinates in camera space (used e.g. for the three colored markers) 
+- `PupilData._2D.LeftEyePosition`, `PupilData._2D.RightEyePosition` or `PupilData._2D.GazePosition`, which will provide the current viewport coordinates in camera space for the respective eye (used e.g. for the three colored markers) 
 
-- `PupilData._2D.GetEyePosition (Camera sceneCamera, GazeSource gazeSource)`, which will apply an additional frustum center offset for each eye (used e.g. for the shader implementations) 
+- `PupilData._2D.GetEyePosition (Camera sceneCamera, int eyeID)`, which will apply an additional frustum center offset for each eye (used e.g. for the shader implementations) 
 
 - `PupilData._3D.GazePosition`, which contains the camera relative gaze position 
 
-As the 3D calibration is currently still under active development, it is recommended to rely on 2D calibration, for now. Unity provides methods to convert 2D viewport coordinates to 3D, which is e.g. used for marker positioning 
+Working with 2D calibration and viewport coordinates, Unity provides methods to translate these to 3D space, which is e.g. used for marker positioning 
 
 - `PupilMarker.UpdatePosition(Vector2 newPosition)`, line 56 
 
@@ -175,7 +177,7 @@ A barebones implementation for users who do not need gaze data or want a simple 
 
 **Frame Publishing**
 
-Another quick-to-read, all-in-one-script example, this time for accessing Pupil eye camera images through the Unity plugin. Have a look at `FramePublishingDemoManager.cs` - which replaced the old `Operator Monitor` implementation - for more details. Much like the Blink demo, this also does not require to go through the calibration process.
+The `Frame Publishing` implementation (which replaced the old `Operator Monitor`) in another example of a single script encompassing all elements of communication with Pupil - this time for subscribing to eye images. Much like the Blink demo, it also does not require to go through the calibration process.
 
 
 ![Frame Publishing Demo](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/FramePublishing.png)
