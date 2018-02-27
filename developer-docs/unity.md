@@ -219,8 +219,10 @@ The heatmap demo allows to export gaze visualization to a spherical video or ima
 
 
 ![Heatmap Component](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HeatmapComponent.png)
+
 - Mode 
-	-`Particle` will color the area the user is looking at 
+	
+	- `Particle` will color the area the user is looking at 
 
 	- `ParticleDebug` will show it for the user, as well 
 
