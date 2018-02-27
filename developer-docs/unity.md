@@ -88,7 +88,7 @@ In its main GUI, Pupil Capture gives real time feedback on how the confidence le
 
 
 ![Pupil Capture Main GUI](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilCaptureMainGUI.png)
-One of the most common problems is the standard communication port `50020` being blocked. In that case, Pupil Capture will chose an alternate one. To be able to check this, activate `Pupil Remote` in Plugin Manager 
+One of the most common problems is the standard communication port `50020` being blocked. In that case, Pupil Capture will choose an alternate one. To be able to check this, activate `Pupil Remote` in Plugin Manager 
 
 
 ![Pupil Capture Plugins](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/PupilCapturePlugins.png)
@@ -102,7 +102,7 @@ Once a connection has been established, the next step usually is to start a cali
 ![Before Starting A Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/BeforeStartingCalibration.png)
 
 - A circle indicating the extend of where the calibration marker will be placed
-- An image for each eye camera to help you make sure the headset is set up correctly 
+- An image for each eye camera to help you make sure the headset is set up correctly. To disable this feature, select the `Pupil Demo Manager` and toggle the `Display Eye Images` checkmark
 
 The positioning of the calibration marker is very important, as it is used as reference for the Pupil eye tracking algorithms. If you are having trouble with the accuracy, try adapting the calibration settings:
 
@@ -134,7 +134,7 @@ Once the calibration is finished and all reference points are sent to Pupil, the
 
 ### Pupil Demo Manager 
 
-Excluding the Blink Unity scene, every other demo contains the PupilDemoManager gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. The Demo Manager is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process. A successful calibration results in activating the actual scene objects, so for example the 3D market scene. If you use the prefab for your own scene, please specify the gameobject to activate by adding them to the `Game Objects To Enable` list, exposed in the Unity Inspector. 
+Other than the `Blink` and `Frame Publishing` Unity scene, most demos contain the PupilDemoManager gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. The Demo Manager is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process. A successful calibration results in activating the actual scene objects, so for example the 3D market scene. If you use the prefab for your own scene, please specify the gameobject to activate by adding them to the `Game Objects To Enable` list, exposed in the Unity Inspector. 
 
 ### Accessing Data 
 
@@ -160,6 +160,15 @@ An alternative is used by the laster pointer implementation in the `2D Calibrati
 
 This solutions requires the use of Unity Colliders, though, which, when hit by the above defined ray, return the 3D hit point position. 
 
+### Recording Data
+
+The Unity VR plugin allows to trigger recordings in Pupil Capture (Pupil Service does not support this feature). Recordings can be started through the interface GUI of `PupilGazeTracker` or by pressing the 'R' key (in either case only once a connection has been established). On the plugin side of things, two additional processes are started
+- a screen recording, saving the current view to a video file 
+
+- saving Pupil gaze data and their corresponding Unity positions in CSV format using this structure
+	- `Timestamp,Identifier,PupilPositionX,PupilPositionY,PupilPositionZ,UnityWorldPositionX,UnityWorldPositionY,UnityWorldPositionZ`
+
+The resulting files are saved to the path set in `PupilSettings/Recorder/File Path`. You can change the it manually, there, or through the `PupilGazeTracker` Inspector GUI under `Settings` by activating `CustomPath` and clicking the `Browse` button.
 ### Demo Scenes 
 
 Here a short description of the included examples and what should be visible on screen, once the calibration (if needed) is finished. 
@@ -211,7 +220,6 @@ The heatmap demo allows to export gaze visualization to a spherical video or ima
 
 ![Heatmap Component](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HeatmapComponent.png)
 - Mode 
-
 	-`Particle` will color the area the user is looking at 
 
 	- `ParticleDebug` will show it for the user, as well 
