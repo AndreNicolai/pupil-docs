@@ -140,7 +140,7 @@ Other than the `Blink` and `Frame Publishing` Unity scene, most demos contain th
 
 ### Accessing Data 
 
-After a successful calibration, you need to call `PupilTools.Subscribe(string topic)` to receive messages for the `topic` you specify. Most of the demos included in this project are based on subscribing to `gaze` and its implementation shall serve as an example on how to do it for other topics. Message interpretation is handled inside the code block starting in line 127 of `Connection.cs`. Pupil messages for the `gaze` topic contain dictionaries, which are deserialized using the `MessagePackSerializer` classes (line 167) and stored to `PupilTools.gazeDictionary`. `PupilTools.UpdateGaze()` goes through the data, storing relevant information (e.g. the gaze positions) through `PupilData.AddGazeToEyeData(string key, float[] position)`. Based on the chosen calibration type, this can either be 2D or 3D. To access the data, use 
+The first step to be able to access Pupil data is to call `PupilTools.SubscribeTo(string topic)` to receive messages for the `topic` you specify. Most of the demos included in this project are based on subscribing to `gaze` and its implementation shall serve as an example on how to do it for other topics. Message interpretation is handled inside the code block starting in line 127 of `Connection.cs`. After a successful calibration, Pupil messages for the `gaze` topic contain dictionaries, which are deserialized using the `MessagePackSerializer` classes (line 167) and stored to `PupilTools.gazeDictionary`. `PupilTools.UpdateGaze()` goes through the data, storing relevant information (e.g. the gaze positions) through `PupilData.AddGazeToEyeData(string key, float[] position)`. Based on the chosen calibration type, this can either be 2D or 3D. To access the data, use 
 
 - `PupilData._2D.LeftEyePosition`, `PupilData._2D.RightEyePosition` or `PupilData._2D.GazePosition`, which will provide the current viewport coordinates in camera space for the respective eye (used e.g. for the three colored markers) 
 
@@ -162,6 +162,26 @@ An alternative is used by the laster pointer implementation in the `2D Calibrati
 
 This solutions requires the use of Unity Colliders, though, which, when hit by the above defined ray, return the 3D hit point position. 
 
+We include two demo scenes that exemplify subscribing to topics for which no calibration is required: `Blink` and `Frame Publishing` (description below). 
+
+Another, often asked for, example is getting the values for pupil diameter. Here are the steps
+- `PupilTools.SubscribeTo("pupil.")` to subscribe to both eyes
+- Once data is being sent, Connection.cs will try to interpret it, which in this case just means the following
+	if (msgType == "pupil.0")
+		PupilTools.pupil0Dictionary = dictionary;
+	else if (msgType == "pupil.1")
+		PupilTools.pupil1Dictionary = dictionary;
+- To look for a specific subtopic like "diameter", you could e.g. adapt PupilTools.ConfidenceForDictionary(Dictionary<string,object> dictionary)
+	float DiameterForDictionary(Dictionary<string,object> dictionary)
+	{
+		object diameter;
+		dictionary.TryGetValue ("diameter", out diameter);
+		return (float)(double)diameter;
+	}
+- And finally, feed the new method with the dictionaries named above (here just one as example)
+	var diameter = DiameterForDictionary(PupilTools.pupil0Dictionary);
+	
+	
 ### Recording Data
 
 The Unity VR plugin allows to trigger recordings in Pupil Capture (Pupil Service does not support this feature). Recordings can be started through the interface GUI of `PupilGazeTracker` or by pressing the 'R' key (in either case only once a connection has been established). On the plugin side of things, two additional processes are started
