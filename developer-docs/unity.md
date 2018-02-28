@@ -169,17 +169,25 @@ Another, often asked for, example is getting the values for pupil diameter. Here
 - Once data is being sent, Connection.cs will try to interpret it, which in this case just means the following
 	
 	`if (msgType == "pupil.0")
+	
 		PupilTools.pupil0Dictionary = dictionary;
+		
 	else if (msgType == "pupil.1")
+	
 		PupilTools.pupil1Dictionary = dictionary;`
 		
 - To look for a specific subtopic like "diameter", you could e.g. adapt PupilTools.ConfidenceForDictionary(Dictionary<string,object> dictionary)
 	
 	`float DiameterForDictionary(Dictionary<string,object> dictionary)
+	
 	{
+	
 		object diameter;
+		
 		dictionary.TryGetValue ("diameter", out diameter);
+		
 		return (float)(double)diameter;
+		
 	}`
 	
 - And finally, feed the new method with the dictionaries named above (here just one as example)
