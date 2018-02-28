@@ -114,6 +114,8 @@ Go to `pupil_plugin/PupilSettings` and select `Calibration`
 
 - `Marker Scale` determines the size of the calibration marker on screen 
 
+- `Center Point` allows you to shift the calibration point center in x and y direction. This can be helpful if, due to how the VR headset sits on your head, the center for the eyes differs from the center of the display. For 2D calibration, the center point values are interpreted as viewport coordinates
+
 - `Vector Depth Radius` can be adapted to define the dimension of the circle 
 
 	- 2D calibration: We place the markers based on viewport coordinates, starting at the center position (0.5,0.5). Depth translates to the distance from the camera at which marker is placed. Radius defines the distance from the center point (in viewport space).
