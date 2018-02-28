@@ -173,7 +173,7 @@ Another, often asked for, example is getting the values for pupil diameter. Here
 	else if (msgType == "pupil.1")
 		PupilTools.pupil1Dictionary = dictionary;`
 	```	
-- To look for a specific subtopic like "diameter", you could e.g. adapt PupilTools.ConfidenceForDictionary(Dictionary<string,object> dictionary)
+- To look for a specific subtopic like "diameter", you could e.g. adapt `PupilTools.ConfidenceForDictionary(Dictionary<string,object> dictionary)`
 	```
 	float DiameterForDictionary(Dictionary<string,object> dictionary)
 	{
