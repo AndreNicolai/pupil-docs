@@ -102,7 +102,7 @@ Once a connection has been established, the next step usually is to start a cali
 ![Before Starting A Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/BeforeStartingCalibration.png)
 
 - Circles (as depiceted or one circle in case of 2D calibration) indicating the extend of where the calibration markers will be placed
-- An image for each eye camera to help you make sure the headset is set up correctly. To disable this feature, select the `Pupil Demo Manager` and toggle the `Display Eye Images` checkmark
+- An image for each eye camera to help you make sure the headset is set up correctly. To disable this feature, select the `Pupil Manager` and toggle the `Display Eye Images` checkmark
 
 The positioning of the calibration marker is very important, as it is used as reference for the Pupil eye tracking algorithms. If you are having trouble with the accuracy, try adapting the calibration settings:
 
@@ -130,13 +130,13 @@ During calibration, the marker color will indicate whether there is a problem wi
 
 Once the calibration is finished and all reference points are sent to Pupil, the software will respond with either a `success` or `failure` message.  
 
-- In case of success, the PupilDemoManager with activate the gameobjects for the actual scene and display the respective gaze visualizations 
+- In case of success, `Pupil Manager` with activate the gameobjects for the actual scene and display the respective gaze visualizations 
 
 - In case of a failure, please use Pupil Capture to see if the confidence levels are good for both eyes when the user is wearing the headset. Unity accepts gaze data with a confidence level greater than 0.6, but values above 0.9 should be targeted. Also have a look at the console, as it might give you a hint at what is going wrong. 
 
-### Pupil Demo Manager 
+### Pupil Manager 
 
-Other than the `Blink` and `Frame Publishing` Unity scene, most demos contain the PupilDemoManager gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. The Demo Manager is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process. A successful calibration results in activating the actual scene objects, so for example the 3D market scene. If you use the prefab for your own scene, please specify the gameobject to activate by adding them to the `Game Objects To Enable` list, exposed in the Unity Inspector. 
+All market-based demos as well as the calibration scene contain the `Pupil Manager` gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. `Pupil Manager` is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process. A successful calibration results in activating the actual scene objects, so for example the 3D market scene. If you use the prefab for your own scene, please specify the gameobject to activate by adding them to the `Game Objects To Enable` list, exposed in the Unity Inspector. 
 
 ### Accessing Data 
 
@@ -162,30 +162,33 @@ An alternative is used by the laster pointer implementation in the `2D Calibrati
 
 This solutions requires the use of Unity Colliders, though, which, when hit by the above defined ray, return the 3D hit point position. 
 
-We include two demo scenes that exemplify subscribing to topics for which no calibration is required: `Blink` and `Frame Publishing` (description below). 
+We include three demo scenes that exemplify subscribing to topics to get data for which no calibration is required: `Blink`, `Frame Publishing` (short description below) and `Pupil`, for which we will go into more detail, here: 
 
-Another, often asked for, example is getting the values for pupil diameter. Here are the steps
+One of the most often asked for examples is getting values for pupil diameter. Here are the steps involved (taken from `PupilDemo.cs`)
 - `PupilTools.SubscribeTo("pupil.")` to subscribe to both eyes
-- Once data is being sent, Connection.cs will try to interpret it, which in this case just means the following
+- Once data is being sent, `CustomReceiveData(string topic, Dictionary<string,object> dictionary, byte[] thirdFrame = null)` will be called to interpret the result
 	```
-	if (msgType == "pupil.0")
-		PupilTools.pupil0Dictionary = dictionary;
-	else if (msgType == "pupil.1")
-		PupilTools.pupil1Dictionary = dictionary;`
+	if (topic.StartsWith ("pupil") )
+		{
+			foreach (var item in dictionary)
+			{
+				switch (item.Key)
+				{
+				case "topic":
+				case "method":
+				case "id":
+					var textForKey = PupilTools.StringFromDictionary (dictionary, item.Key);
+					// Do stuff
+					break;
+				case "confidence":
+				case "timestamp":
+				case "diameter":
+					var valueForKey = PupilTools.FloatFromDictionary (dictionary, item.Key);
+					// Do stuff
+					break;
 	```	
-- To look for a specific subtopic like "diameter", you could e.g. adapt `PupilTools.ConfidenceForDictionary(Dictionary<string,object> dictionary)`
-	```
-	float DiameterForDictionary(Dictionary<string,object> dictionary)
-	{
-		object diameter;
-		dictionary.TryGetValue ("diameter", out diameter);
-		return (float)(double)diameter;
-	}
-	```
-- And finally, feed the new method with the dictionaries named above (here just one as example)
-	```
-	var diameter = DiameterForDictionary(PupilTools.pupil0Dictionary);
-	```
+- There are multiple subtopics included in the dictionary and as "diameter" is of type `float`, we need to call `PupilTools.FloatFromDictionary(Dictionary<string,object> source, string key)` to get the actual value
+- The script implementation is based on the values you receive for 2D capturing mode. Have a look at [the documentation](https://github.com/pupil-labs/pupil-docs/blob/master/user-docs/data-format.md#looking-at-the-data) to see the additional values available in 3D mode
 	
 ### Recording Data
 
@@ -209,7 +212,7 @@ This scene will display three colored markers representing the left (green) and 
 
 **Blink** 
 
-A barebones implementation for users who do not need gaze data or want a simple example on how to subscribe to a topic and read data from the socket. As suggested by its name, this demo utilizes the Blink_Detection Pupil plugin. It does not require to run through the calibration process. While dictionary setup is usually kept within PupilTools, BlinkDemoManager contains all blink-specific variants to give a better overview of what is involved. This includes starting/stopping the plugin, un-/subscribing to `blinks` and receiving the dictionary packages from Pupil. 
+A barebones implementation for users who do not need gaze data or want a simple example on how to subscribe to a topic and read data from the socket. As suggested by its name, this demo utilizes the Blink_Detection Pupil plugin. It does not require to run through the calibration process. While dictionary setup is usually kept within PupilTools, BlinkDemo contains all blink-specific variants to give a better overview of what is involved. This includes starting/stopping the plugin, un-/subscribing to `blinks` and receiving the dictionary packages from Pupil. 
 
 **Frame Publishing**
 
@@ -217,6 +220,10 @@ The `Frame Publishing` implementation (which replaced the old `Operator Monitor`
 
 
 ![Frame Publishing Demo](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/FramePublishing.png)
+
+**Pupil**
+
+An example on how to subscribe to "pupil." and how to interpret the dictionary you receive.
 
 **2D/3D Calibration Demo (VR)**
 
