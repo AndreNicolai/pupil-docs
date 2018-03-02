@@ -101,7 +101,7 @@ Once a connection has been established, the next step usually is to start a cali
 
 ![Before Starting A Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/BeforeStartingCalibration.png)
 
-- A circle indicating the extend of where the calibration marker will be placed
+- Circles (as depiceted or one circle in case of 2D calibration) indicating the extend of where the calibration markers will be placed
 - An image for each eye camera to help you make sure the headset is set up correctly. To disable this feature, select the `Pupil Demo Manager` and toggle the `Display Eye Images` checkmark
 
 The positioning of the calibration marker is very important, as it is used as reference for the Pupil eye tracking algorithms. If you are having trouble with the accuracy, try adapting the calibration settings:
@@ -195,7 +195,7 @@ The Unity VR plugin allows to trigger recordings in Pupil Capture (Pupil Service
 - saving Pupil gaze data and their corresponding Unity positions in CSV format using this structure
 	- `Timestamp,Identifier,PupilPositionX,PupilPositionY,PupilPositionZ,UnityWorldPositionX,UnityWorldPositionY,UnityWorldPositionZ`
 
-The resulting files are saved to the path set in `PupilSettings/Recorder/File Path`. You can change the it manually, there, or through the `PupilGazeTracker` Inspector GUI under `Settings` by activating `CustomPath` and clicking the `Browse` button.
+The resulting files are saved to the path set in `PupilSettings/Recorder/File Path`. You can change it manually, there, or through the `PupilGazeTracker` Inspector GUI under `Settings` by activating `CustomPath` and clicking the `Browse` button.
 ### Demo Scenes 
 
 Here a short description of the included examples and what should be visible on screen, once the calibration (if needed) is finished. 
