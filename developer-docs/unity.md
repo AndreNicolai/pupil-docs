@@ -118,9 +118,9 @@ Go to `pupil_plugin/PupilSettings` and select `Calibration`
 
 - `Vector Depth Radius` can be adapted to define the dimension of the circle 
 
-	- 2D calibration: We place the markers based on viewport coordinates, starting at the center position (0.5,0.5). Depth translates to the distance from the camera at which marker is placed. Radius defines the distance from the center point (in viewport space).
+	- 2D calibration: Depth translates to the distance from the camera at which marker is placed. Radius defines the distance from the center point (in viewport space).
 
-    - 3D calibration: We place the markers based on XYZ coordinates in local camera space. As we need to calibrate for depth, as well, we have multiple distances at which the circle pattern is applied. In the standard case at a distance of `0.6`, `1` and `2`. Radius defines the XY distance from the current center point (0,0,Depth).
+    - 3D calibration: As we need to calibrate for depth, as well, we have multiple distances at which the circle pattern is applied. In the standard case at a distance of `0.6`, `1` and `2`. Radius defines the XY distance from the current center point (0,0,Depth).
 
 - `Samples Per Depth` defines the amount of calibration points recorder for each marker position. We reduced this number for 3D calibration to a third of the samples of 2D calibration so it takes the same duration of time. 
 
