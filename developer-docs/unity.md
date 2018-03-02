@@ -169,23 +169,23 @@ One of the most often asked for examples is getting values for pupil diameter. H
 - Once data is being sent, `CustomReceiveData(string topic, Dictionary<string,object> dictionary, byte[] thirdFrame = null)` will be called to interpret the result
 	```
 	if (topic.StartsWith ("pupil") )
+	{
+		foreach (var item in dictionary)
 		{
-			foreach (var item in dictionary)
+			switch (item.Key)
 			{
-				switch (item.Key)
-				{
-				case "topic":
-				case "method":
-				case "id":
-					var textForKey = PupilTools.StringFromDictionary (dictionary, item.Key);
-					// Do stuff
-					break;
-				case "confidence":
-				case "timestamp":
-				case "diameter":
-					var valueForKey = PupilTools.FloatFromDictionary (dictionary, item.Key);
-					// Do stuff
-					break;
+			case "topic":
+			case "method":
+			case "id":
+				var textForKey = PupilTools.StringFromDictionary (dictionary, item.Key);
+				// Do stuff
+				break;
+			case "confidence":
+			case "timestamp":
+			case "diameter":
+				var valueForKey = PupilTools.FloatFromDictionary (dictionary, item.Key);
+				// Do stuff
+				break;
 	```	
 - There are multiple subtopics included in the dictionary and as "diameter" is of type `float`, we need to call `PupilTools.FloatFromDictionary(Dictionary<string,object> source, string key)` to get the actual value
 - The script implementation is based on the values you receive for 2D capturing mode. Have a look at [the documentation](https://github.com/pupil-labs/pupil-docs/blob/master/user-docs/data-format.md#looking-at-the-data) to see the additional values available in 3D mode
