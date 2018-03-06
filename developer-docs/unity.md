@@ -31,6 +31,8 @@ This document will describe the use of the latter two in more detail. Both share
 
 To open either project, start Unity and select `unity_pupil_plugin_hololens` or `unity_pupil_plugin_vr` as source folder. 
 
+Once you are ready to transition between the example projects and your own, we include Unity import packages containing all necessary assets and scripts related to Pupil gaze tracking. To import them, go to `Assets/Import Package/Custom Package...` from the Unity menu and select the `Pupil Import Package.unitypackage` from either the VR or HoloLens project folder. The HoloLens package additionally requires the HoloToolkit to be in your projects Assets folder.
+
 **The VR Build and Player Settings should look like this**
 
 
