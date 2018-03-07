@@ -103,7 +103,7 @@ Once a connection has been established, the next step usually is to start a cali
 
 ![Before Starting A Calibration](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/BeforeStartingCalibration.png)
 
-- Circles (as depiceted or one circle in case of 2D calibration) indicating the extend of where the calibration markers will be placed
+- Circles (as depiceted or one circle in case of 2D calibration) indicating the extend of where the calibration markers will be placed. It is recommended that the point extend (i.e. the radius of the circle pattern) is set so that the markers are placed towards the edge of the visible display area
 - An image for each eye camera to help you make sure the headset is set up correctly. To disable this feature, select the `Pupil Manager` and toggle the `Display Eye Images` checkmark
 
 The positioning of the calibration marker is very important, as it is used as reference for the Pupil eye tracking algorithms. If you are having trouble with the accuracy, try adapting the calibration settings:
