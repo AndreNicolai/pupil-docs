@@ -31,7 +31,19 @@ This document will describe the use of the latter two in more detail. Both share
 
 To open either project, start Unity and select `unity_pupil_plugin_hololens` or `unity_pupil_plugin_vr` as source folder. 
 
-Once you are ready to transition between the example projects and your own, we include Unity import packages containing all necessary assets and scripts related to Pupil gaze tracking. To import them, go to `Assets/Import Package/Custom Package...` from the Unity menu and select the `Pupil Import Package.unitypackage` from either the VR or HoloLens project folder. The HoloLens package additionally requires the HoloToolkit to be in your projects Assets folder.
+Once you are ready to transition between the example projects and your own, we provide Unity import packages containing all necessary assets and scripts related to Pupil gaze tracking. You can find the packages as part of the releases
+
+- [Unity Import Packages](https://github.com/pupil-labs/hmd-eyes/releases/latest)
+
+To import them, go to `Assets/Import Package/Custom Package...` from the Unity menu and select either `Pupil.Import.Package.VR.unitypackage` or `Pupil.Import.Package.HoloLens.unitypackage` depending on your intended target. 
+
+The HoloLens package additionally requires the HoloToolkit to be in your projects Assets folder. You can download it here
+
+- [HoloToolkit GitHub page](https://github.com/Microsoft/MixedRealityToolkit-Unity)
+
+The VR package also comes with a version of `ffmpeg`, which is required to do screen recordings in Unity.
+
+What is not included in the packages are the Market scene demo assets nor their related scripts.
 
 **The VR Build and Player Settings should look like this**
 
@@ -132,13 +144,18 @@ During calibration, the marker color will indicate whether there is a problem wi
 
 Once the calibration is finished and all reference points are sent to Pupil, the software will respond with either a `success` or `failure` message.  
 
-- In case of success, `Pupil Manager` with activate the gameobjects for the actual scene and display the respective gaze visualizations 
+- In case of success, `Pupil Manager` will continue by loading the actual scene with the respective gaze visualizations 
 
 - In case of a failure, please use Pupil Capture to see if the confidence levels are good for both eyes when the user is wearing the headset. Unity accepts gaze data with a confidence level greater than 0.6, but values above 0.9 should be targeted. Also have a look at the console, as it might give you a hint at what is going wrong. 
 
 ### Pupil Manager 
 
-All market-based demos as well as the calibration scene contain the `Pupil Manager` gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. `Pupil Manager` is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process. A successful calibration results in activating the actual scene objects, so for example the 3D market scene. If you use the prefab for your own scene, please specify the gameobject to activate by adding them to the `Game Objects To Enable` list, exposed in the Unity Inspector. 
+All market-based demos as well as the `Calibration` scene contain the `Pupil Manager` gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. `Pupil Manager` is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process.
+A successful calibration triggers loading the actual scene, so for example the 3D market scene or in case of the `Calibration` scene an empty scene with a camera gameobject and the three-colored tracking markers. If you use the prefab for your own scene, please specify the scene/scenes you want to load in the Inspector GUI for the `Pupil Manager`
+- Add the name to the `Available Scenes` list
+- Set the `Current Scene Index` to the corresponding index
+- Scenes are loaded as additional content, so the `Pupil Manager` will still be available
+	- If you have to re-do the calibration after a scene has been loaded, just press 'c' (in case of VR) or use the GUI to do so (on HoloLens)
 
 ### Accessing Data 
 
