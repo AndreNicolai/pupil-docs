@@ -55,7 +55,7 @@ The software has been tested for both Oculus and OpenVR SDKs. Please make sure t
 
 
 ![HoloLens Build And Player Settings](https://github.com/AndreNicolai/pupil-docs/blob/master/images/unity/HoloLensBuildAndPlayerSettings.png)
-The `Build Settings` debugging option `Unity C# Projects` will allow you to debug the code at runtime while deploying to HoloLens from Visual Studio. As an alternative debugging option, Unity`s `Holographic Emulation` is also supported. 
+The `Build Settings` debugging option `Unity C# Projects` will allow you to debug the code at runtime while deploying to HoloLens from Visual Studio. As an alternative debugging option, Unity's `Holographic Emulation` is also supported. 
 
 As for the Player Settings, make sure the following `Capabilities` are enabled under `Publishing Settings` 
 
@@ -151,9 +151,10 @@ Once the calibration is finished and all reference points are sent to Pupil, the
 ### Pupil Manager 
 
 All market-based demos as well as the `Calibration` scene contain the `Pupil Manager` gameobject. Its corresponding script is listening for Pupil events such as the connection being established/quit and the calibration being started, stopped or failing. `Pupil Manager` is also available as Unity prefab (to be found in `pupil_plugin/Prefabs`), so that it can easily be added to existing scenes. It brings its own camera and a simple GUI to guide the user through the connection and calibration process.
-A successful calibration triggers loading the actual scene, so for example the 3D market scene or in case of the `Calibration` scene an empty scene with a camera gameobject and the three-colored tracking markers. If you use the prefab for your own scene, please specify the scene/scenes you want to load in the Inspector GUI for the `Pupil Manager`
+A successful calibration triggers loading the actual scene, so for example the 3D market scene or in case of the `Calibration` scene an empty scene with a camera gameobject and the three colored tracking markers. If you use the prefab for your own scene, please specify the scene/scenes you want to load in the Inspector GUI for `Pupil Manager`
 - Add the name to the `Available Scenes` list
 - Set the `Current Scene Index` to the corresponding index
+- For Unity to be able to find the scene, it also needs to be added to `File/Build Settings/Scenes In Build`
 - Scenes are loaded as additional content, so the `Pupil Manager` will still be available
 	- If you have to re-do the calibration after a scene has been loaded, just press 'c' (in case of VR) or use the GUI to do so (on HoloLens)
 
@@ -163,7 +164,7 @@ The first step to be able to access Pupil data is to call `PupilTools.SubscribeT
 
 - `PupilData._2D.LeftEyePosition`, `PupilData._2D.RightEyePosition` or `PupilData._2D.GazePosition`, which will provide the current viewport coordinates in camera space for the respective eye (used e.g. for the three colored markers) 
 
-- `PupilData._2D.GetEyePosition (Camera sceneCamera, int eyeID)`, which will apply an additional frustum center offset for each eye (used e.g. for the shader implementations) 
+- `PupilData._2D.GetEyePosition (Camera sceneCamera, string eyeID)`, which will apply an additional frustum center offset for each eye (used e.g. for the shader implementations) 
 
 - `PupilData._3D.GazePosition`, which contains the camera relative gaze position 
 
@@ -246,7 +247,7 @@ An example on how to subscribe to "pupil." and how to interpret the dictionary y
 
 **2D/3D Calibration Demo (VR)**
 
-These scenes will display a 3D market scene, based on Unity assets available for free on the Asset Store. While the 3D calibration scene only includes a simple white marker visualization, the 2D calibration pendant includes the three colored variant used in the Calibration demo scene and two additional visualizations 
+These scenes will display a 3D market scene, based on Unity assets available for free on the [Asset Store](https://assetstore.unity.com/packages/essentials/tutorial-projects/adventure-sample-game-76216). While the 3D calibration scene only includes a simple white marker visualization, the 2D calibration pendant includes the three colored variant used in the Calibration demo scene and two additional visualizations 
 
 - A laser pointer going to the center of your gaze (depicted on the left) 
 
