@@ -11,7 +11,7 @@ page_weight = 1.3
 
 This document will guide you through the installation and use of the Unity plugin for the Pupil Labs eye tracking solution. 
 
-If you have everything up and running and just want to get started with some demos, load these Unity scenes
+If you have everything up and running and just want to get started with some demos, load these Unity scenes (descriptions available at the end of this document)
 - Scenes that will run you through a calibration
 	- `pupil_plugin/Calibration`
 	- `Market Scene Demo/2D Calibration Demo`
@@ -23,7 +23,7 @@ If you have everything up and running and just want to get started with some dem
 	- `pupil_plugin/Blink`
 	- `pupil_plugin/FramePublishing`
 
-All other scenes meant to be loaded as additional content, only, once a calibration was successful.
+All other scenes are meant to be loaded as additional content, once a calibration was successful. This is done by the `Pupil Manager`, also described below.
 
 ### Installation 
 
